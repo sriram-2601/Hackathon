@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoPack AI - Sustainable E-commerce Packaging & Disposal Planner</title>
+  <meta name="description" content="AI-powered packaging sustainability auditor, volumetric box size optimizer, and customer circular disposal planner.">
+  <!-- Google Fonts: Inter and Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Background Decorative Blurs -->
+  <div class="bg-blur blur-1"></div>
+  <div class="bg-blur blur-2"></div>
+  <div class="bg-blur blur-3"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo-area">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+            <path d="M12 22a10 10 0 0 1-7.54-3.42"></path>
+            <path d="M12 2a10 10 0 0 0 7.54 3.42"></path>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>EcoPack <span class="accent-text">AI</span></h1>
+          <p>Circular Packaging Intelligence</p>
+        </div>
+      </div>
+
+      <!-- Live Carbon Ticker -->
+      <div class="carbon-ticker-card">
+        <span class="ticker-dot"></span>
+        <div class="ticker-info">
+          <span class="ticker-label">EST. CARBON AVOIDED GLOBALLY</span>
+          <span class="ticker-value" id="global-carbon-ticker">148,932.40</span> <span class="ticker-unit">kg CO₂e</span>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <div class="api-badge" id="api-status-badge">
+          <span class="badge-dot"></span>
+          <span class="badge-label">Checking API Status...</span>
+        </div>
+        <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Theme">
+          <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Grid Dashboard -->
+    <main class="dashboard-grid">
+      
+      <!-- Left Column: Operations & Optimizer -->
+      <div class="grid-column-left">
+        
+        <!-- Section 1: AI Visual Packaging Auditor -->
+        <section class="dashboard-card" id="packaging-auditor-section">
+          <div class="card-header">
+            <div class="card-header-title">
+              <span class="step-num">01</span>
+              <h2>AI Visual Packaging Auditor</h2>
+            </div>
+            <p class="card-subtitle">Upload a photo of your product packaging to audit materials, generate sustainability ratings, and find bio-alternatives.</p>
+          </div>
+
+          <div class="card-content">
+            <!-- Upload Area -->
+            <div class="upload-dropzone" id="upload-zone">
+              <input type="file" id="file-input" accept="image/*" class="file-input-hidden">
+              <div class="dropzone-illustration">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+              </div>
+              <p class="dropzone-text">Drag & drop packaging image here, or <span class="highlight-link">browse files</span></p>
+              <p class="dropzone-hint">Supports JPG, PNG, WebP up to 10MB</p>
+            </div>
+
+            <!-- Demo Presets -->
+            <div class="presets-container">
+              <span class="presets-label">Or test with packaging presets:</span>
+              <div class="preset-chips">
+                <button class="preset-chip" data-preset="bubble">Bubble Mailer</button>
+                <button class="preset-chip" data-preset="box">Oversized Box + Air Pillows</button>
+                <button class="preset-chip" data-preset="styrofoam">Styrofoam Peanuts</button>
+              </div>
+            </div>
+
+            <!-- Upload Preview Area (Hidden by default) -->
+            <div class="upload-preview-container" id="preview-container" style="display: none;">
+              <div class="preview-header">
+                <h3>Selected Image</h3>
+                <button class="remove-btn" id="remove-img-btn">Remove</button>
+              </div>
+              <div class="preview-body">
+                <img id="image-preview" src="" alt="Packaging preview">
+                <button id="analyze-btn" class="primary-btn">
+                  <span>Start AI Sustainability Audit</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="btn-arrow">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <!-- Loading Spinner (Hidden by default) -->
+            <div class="loading-container" id="audit-loading" style="display: none;">
+              <div class="spinner"></div>
+              <p id="loading-status-text">Gemini AI is analyzing material composition...</p>
+              <div class="loading-subtext">Calculating chemical structures, volumetric mass, and circularity scores.</div>
+            </div>
+
+            <!-- Audit Results (Hidden by default) -->
+            <div class="audit-results-container" id="audit-results" style="display: none;">
+              <div class="results-grid">
+                
+                <!-- Eco Score and Summary -->
+                <div class="results-summary-card">
+                  <div class="eco-radial-container">
+                    <svg viewBox="0 0 36 36" class="circular-chart green">
+                      <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                      <path id="eco-score-circle" class="circle" stroke-dasharray="35, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"></path>
+                    </svg>
+                    <div class="eco-score-text">
+                      <span class="score-number" id="results-eco-score">35</span>
+                      <span class="score-label">Eco-Score</span>
+                    </div>
+                  </div>
+                  <div class="summary-details">
+                    <h3 id="results-item-name">Standard Bubble Mailer</h3>
+                    <p id="results-summary">Analyzing environmental profiles of identified materials...</p>
+                  </div>
+                </div>
+
+                <!-- Detected Materials -->
+                <div class="materials-detected-section">
+                  <h3>Detected Packaging Components</h3>
+                  <div class="materials-list" id="results-materials">
+                    <!-- Dynamic Material Items -->
+                  </div>
+                </div>
+
+                <!-- Sustainable Alternatives -->
+                <div class="alternatives-section">
+                  <h3>AI Sustainable Swap Recommendations</h3>
+                  <div class="alternatives-list" id="results-alternatives">
+                    <!-- Dynamic Alternatives -->
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Section 2: Volumetric Sizing & Carbon Optimizer -->
+        <section class="dashboard-card" id="volumetric-optimizer-section">
+          <div class="card-header">
+            <div class="card-header-title">
+              <span class="step-num">02</span>
+              <h2>Volumetric Sizing & Carbon Optimizer</h2>
+            </div>
+            <p class="card-subtitle">Optimize shipping dimensions. Reduce dimensional weight (DIM weight) and packaging air to lower logistics costs and carbon output.</p>
+          </div>
+
+          <div class="card-content">
+            <div class="optimizer-grid">
+              
+              <!-- Form Controls -->
+              <form class="optimizer-form" id="optimizer-form" onsubmit="return false;">
+                <div class="form-group-title">Product Physical Dimensions</div>
+                <div class="dimension-inputs-row">
+                  <div class="input-wrapper">
+                    <label for="p-length">Length</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="p-length" placeholder="15" value="15" min="1" step="0.1" required>
+                      <span class="input-unit">cm</span>
+                    </div>
+                  </div>
+                  <div class="input-wrapper">
+                    <label for="p-width">Width</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="p-width" placeholder="10" value="10" min="1" step="0.1" required>
+                      <span class="input-unit">cm</span>
+                    </div>
+                  </div>
+                  <div class="input-wrapper">
+                    <label for="p-height">Height</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="p-height" placeholder="5" value="5" min="1" step="0.1" required>
+                      <span class="input-unit">cm</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group-title">Current Cardboard Box Dimensions</div>
+                <div class="dimension-inputs-row">
+                  <div class="input-wrapper">
+                    <label for="b-length">Length</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="b-length" placeholder="28" value="28" min="1" step="0.1" required>
+                      <span class="input-unit">cm</span>
+                    </div>
+                  </div>
+                  <div class="input-wrapper">
+                    <label for="b-width">Width</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="b-width" placeholder="20" value="20" min="1" step="0.1" required>
+                      <span class="input-unit">cm</span>
+                    </div>
+                  </div>
+                  <div class="input-wrapper">
+                    <label for="b-height">Height</label>
+                    <div class="input-with-unit">
+                      <input type="number" id="b-height" placeholder="12" value="12" min="1" step="0.1" required>
+                      <span class="input-unit">cm</span>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" id="optimize-btn" class="secondary-btn">
+                  <span>Calculate Sizing Optimization</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                  </svg>
+                </button>
+              </form>
+
+              <!-- Live Visual Box Simulator (SVG representation) -->
+              <div class="box-simulator-container">
+                <div class="simulator-title">Volume Utilization (3D Sizing Preview)</div>
+                <div class="svg-stage" id="svg-stage">
+                  <!-- Custom SVG box diagram with dynamic updates -->
+                  <svg viewBox="0 0 300 220" id="box-svg" width="100%" height="100%">
+                    <!-- Backdrop grid -->
+                    <defs>
+                      <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="var(--border-translucent)" stroke-width="0.5"/>
+                      </pattern>
+                    </defs>
+                    <rect width="100%" height="100%" fill="url(#grid)" rx="8"/>
+
+                    <g transform="translate(150, 110)">
+                      <!-- Current Box (Outer Box Wireframe) -->
+                      <g class="box-current">
+                        <polygon id="svg-cur-top" points="-70,-40 20,-70 90,-20 0,10" fill="rgba(100, 116, 139, 0.05)" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3,3"/>
+                        <polygon id="svg-cur-left" points="-70,-40 -70,30 0,80 0,10" fill="rgba(100, 116, 139, 0.03)" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3,3"/>
+                        <polygon id="svg-cur-right" points="0,80 90,30 90,-20 0,10" fill="rgba(100, 116, 139, 0.03)" stroke="var(--text-muted)" stroke-width="1.5" stroke-dasharray="3,3"/>
+                      </g>
+
+                      <!-- Recommended Box (Inner Optimized Box) -->
+                      <g class="box-recommended">
+                        <polygon id="svg-rec-top" points="-50,-25 15,-45 65,-10 0,10" fill="rgba(16, 185, 129, 0.15)" stroke="var(--accent-primary)" stroke-width="2"/>
+                        <polygon id="svg-rec-left" points="-50,-25 -50,25 0,60 0,10" fill="rgba(16, 185, 129, 0.1)" stroke="var(--accent-primary)" stroke-width="2"/>
+                        <polygon id="svg-rec-right" points="0,60 65,25 65,-10 0,10" fill="rgba(16, 185, 129, 0.05)" stroke="var(--accent-primary)" stroke-width="2"/>
+                      </g>
+
+                      <!-- Product Box (Solid inside) -->
+                      <g class="box-product">
+                        <polygon id="svg-prod-top" points="-45,-20 10,-35 55,-7 0,8" fill="rgba(99, 102, 241, 0.4)" stroke="var(--primary-glow)" stroke-width="1"/>
+                        <polygon id="svg-prod-left" points="-45,-20 -45,15 0,43 0,8" fill="rgba(99, 102, 241, 0.35)" stroke="var(--primary-glow)" stroke-width="1"/>
+                        <polygon id="svg-prod-right" points="0,43 55,15 55,-7 0,8" fill="rgba(99, 102, 241, 0.3)" stroke="var(--primary-glow)" stroke-width="1"/>
+                      </g>
+                    </g>
+                    <!-- Legends -->
+                    <text x="15" y="25" fill="var(--text-muted)" font-size="10" font-family="sans-serif">● Product Cube</text>
+                    <text x="15" y="40" fill="var(--accent-primary)" font-size="10" font-family="sans-serif">● Optimized Box (Rec.)</text>
+                    <text x="15" y="55" fill="var(--text-muted)" font-size="10" font-family="sans-serif">-- Current Box</text>
+                  </svg>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Optimizer Error Alert (Hidden by default) -->
+            <div id="optimizer-error" class="optimizer-error-alert" style="display: none; margin-top: 16px;">
+              <div class="alert-icon-danger" style="background-color: rgba(239, 68, 68, 0.15); color: var(--danger); width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-right: 10px;">
+                ⚠️
+              </div>
+              <div class="error-content" id="optimizer-error-text" style="flex: 1; font-size: 12px; font-weight: 500; color: var(--danger);">
+                Error message goes here.
+              </div>
+            </div>
+
+            <!-- Optimizer Output Details (Hidden initially) -->
+            <div class="optimizer-results-container" id="optimizer-results" style="display: none;">
+              <hr class="results-divider">
+              <div class="optimizer-results-grid">
+                <!-- Stat 1: Efficiency Increase -->
+                <div class="opt-stat-card">
+                  <span class="opt-stat-label">VOLUME UTILIZATION</span>
+                  <div class="opt-stat-change">
+                    <span class="opt-stat-value old-val" id="opt-old-util">11.2%</span>
+                    <svg class="change-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12"></line>
+                      <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                    <span class="opt-stat-value new-val" id="opt-new-util">68.4%</span>
+                  </div>
+                  <p class="opt-stat-sub">Volumetric density of package fill</p>
+                </div>
+
+                <!-- Stat 2: Cardboard weight reduction -->
+                <div class="opt-stat-card">
+                  <span class="opt-stat-label">MATERIAL SAVED</span>
+                  <span class="opt-stat-value green-text" id="opt-material-saved">45% less area</span>
+                  <p class="opt-stat-sub">Reduces box manufacturing cost</p>
+                </div>
+
+                <!-- Stat 3: Scope 3 CO2 Avoided -->
+                <div class="opt-stat-card">
+                  <span class="opt-stat-label">CARBON REDUCTION</span>
+                  <span class="opt-stat-value green-text" id="opt-co2-saved">0.24 kg CO₂e</span>
+                  <p class="opt-stat-sub">Per package shipped (Est.)</p>
+                </div>
+              </div>
+
+              <!-- Box Recommendations Box -->
+              <div class="box-recommendation-alert">
+                <div class="alert-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                    <line x1="4" y1="22" x2="4" y2="15"></line>
+                  </svg>
+                </div>
+                <div class="alert-content">
+                  <h4>Recommended Box Sizing Strategy</h4>
+                  <p>Switch from current box to a custom corrugated container with dimensions <strong id="rec-dimensions-text">16.0 x 11.0 x 6.0 cm</strong>. This maintains a standard 0.5 cm clearance buffer for product protection padding while cutting overall transport volume displacement by <strong id="rec-volume-savings-pct">65%</strong>.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 2.5: Saved Packaging Audits -->
+        <section class="dashboard-card" id="history-section" style="display: none;">
+          <div class="card-header">
+            <div class="card-header-title">
+              <span class="step-num">05</span>
+              <h2>Saved Packaging Audits</h2>
+            </div>
+            <p class="card-subtitle">Access previously saved packaging configs, reload them to the optimizer, or launch their live customer disposal guides.</p>
+          </div>
+          <div class="card-content">
+            <div class="history-list" id="history-items-container">
+              <!-- Dynamic history items will render here -->
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column: Interactive Phone Preview & Analytics -->
+      <div class="grid-column-right">
+        
+        <!-- Section 3: Smartphone Disposal Guide Simulator -->
+        <section class="dashboard-card" id="disposal-simulator-section">
+          <div class="card-header">
+            <div class="card-header-title">
+              <span class="step-num">03</span>
+              <h2>B2C Disposal QR Code Generator</h2>
+            </div>
+            <p class="card-subtitle">Print this custom QR code on boxes or invoices. When customers scan it, they see step-by-step instructions for sorting and circular disposal.</p>
+          </div>
+
+          <div class="card-content phone-simulator-container">
+            <!-- QR Code Box -->
+            <div class="qr-code-box">
+              <div class="qr-graphic" id="qr-container">
+                <!-- Pure SVG QR Code Mock -->
+                <svg viewBox="0 0 100 100" class="qr-svg">
+                  <!-- Borders -->
+                  <rect x="0" y="0" width="22" height="22" fill="none" stroke="currentColor" stroke-width="4"/>
+                  <rect x="3" y="3" width="16" height="16" fill="currentColor"/>
+                  <rect x="6" y="6" width="10" height="10" fill="white"/>
+                  
+                  <rect x="78" y="0" width="22" height="22" fill="none" stroke="currentColor" stroke-width="4"/>
+                  <rect x="81" y="3" width="16" height="16" fill="currentColor"/>
+                  <rect x="84" y="6" width="10" height="10" fill="white"/>
+                  
+                  <rect x="0" y="78" width="22" height="22" fill="none" stroke="currentColor" stroke-width="4"/>
+                  <rect x="3" y="81" width="16" height="16" fill="currentColor"/>
+                  <rect x="6" y="84" width="10" height="10" fill="white"/>
+                  
+                  <!-- Random pixels -->
+                  <rect x="30" y="4" width="6" height="6" fill="currentColor"/>
+                  <rect x="42" y="10" width="10" height="4" fill="currentColor"/>
+                  <rect x="60" y="2" width="4" height="12" fill="currentColor"/>
+                  <rect x="35" y="25" width="8" height="8" fill="currentColor"/>
+                  <rect x="10" y="35" width="12" height="4" fill="currentColor"/>
+                  <rect x="5" y="45" width="4" height="15" fill="currentColor"/>
+                  <rect x="52" y="35" width="16" height="6" fill="currentColor"/>
+                  <rect x="72" y="40" width="8" height="8" fill="currentColor"/>
+                  <rect x="30" y="55" width="14" height="4" fill="currentColor"/>
+                  <rect x="50" y="55" width="8" height="8" fill="currentColor"/>
+                  <rect x="85" y="55" width="10" height="6" fill="currentColor"/>
+                  <rect x="30" y="78" width="8" height="8" fill="currentColor"/>
+                  <rect x="42" y="85" width="18" height="4" fill="currentColor"/>
+                  <rect x="70" y="78" width="6" height="18" fill="currentColor"/>
+                  <rect x="85" y="85" width="8" height="8" fill="currentColor"/>
+                </svg>
+              </div>
+              <div class="qr-meta">
+                <span class="qr-tag">DYNAMIC QR LINK</span>
+                <span class="qr-url">ecopack.ai/guide/p83921</span>
+                <button class="text-btn-accent" id="download-qr-btn">Download Asset SVG</button>
+              </div>
+            </div>
+
+            <!-- Phone Wrapper Mock -->
+            <div class="phone-frame">
+              <div class="phone-notch"></div>
+              <div class="phone-screen">
+                
+                <!-- Phone Top Bar -->
+                <div class="phone-header">
+                  <div class="phone-time">9:41</div>
+                  <div class="phone-icons">
+                    <span class="signal-bar"></span>
+                    <span class="wifi-wave"></span>
+                    <span class="battery-cell"></span>
+                  </div>
+                </div>
+
+                <!-- Phone App UI Area -->
+                <div class="phone-body">
+                  <!-- Phone Guide Header -->
+                  <div class="phone-guide-top">
+                    <div class="leaf-bubble">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 9.8a7 7 0 0 1-9 8.2z"></path>
+                        <path d="M9 22v-4h-4v-4H1"></path>
+                      </svg>
+                    </div>
+                    <h3>Circular Disposal Guide</h3>
+                    <p class="phone-subtitle">For order shipped by <strong>GreenFashion Co.</strong></p>
+                  </div>
+
+                  <!-- Dynamic Mobile Guide Checklist -->
+                  <div class="phone-guide-checklist">
+                    <p class="section-intro-text">Please complete this 3-step checklist to recycle or compost this package responsibly:</p>
+                    
+                    <div class="checklist-items-wrapper" id="phone-checklist-container">
+                      <!-- Dynamic Checklist Content -->
+                      <div class="phone-check-item">
+                        <input type="checkbox" id="m-step-1">
+                        <label for="m-step-1">
+                          <span class="checkbox-custom"></span>
+                          <div class="step-text">
+                            <strong>Step 1: Peel Address Label</strong>
+                            <p>Peel off the sticky paper shipping label from the envelope. Throw the label in general trash, as it is non-recyclable.</p>
+                          </div>
+                        </label>
+                      </div>
+
+                      <div class="phone-check-item">
+                        <input type="checkbox" id="m-step-2">
+                        <label for="m-step-2">
+                          <span class="checkbox-custom"></span>
+                          <div class="step-text">
+                            <strong>Step 2: Collect Plastic Film</strong>
+                            <p>Do not throw the bubble mailer in the paper bin. Store it with your soft plastic bags to take to a supermarket recycling drop-off.</p>
+                          </div>
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Phone Circular Success Banner -->
+                  <div class="phone-success-banner" id="phone-success-card" style="display: none;">
+                    <div class="success-icon-wrap">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </div>
+                    <h4>100% Sorted!</h4>
+                    <p>You prevented 0.18 kg of carbon emissions and kept plastics out of our oceans. Awesome job!</p>
+                  </div>
+
+                  <!-- Phone Footer -->
+                  <div class="phone-guide-footer">
+                    <div class="circular-seal">♻️ Verified Sustainable EcoPack</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Section 4: Circular Economy Impact Analytics -->
+        <section class="dashboard-card" id="analytics-section">
+          <div class="card-header">
+            <div class="card-header-title">
+              <span class="step-num">04</span>
+              <h2>Impact Analytics Dashboard</h2>
+            </div>
+            <p class="card-subtitle">Real-time simulation of aggregate impact metrics from the optimized packaging sizes and sorting guidelines.</p>
+          </div>
+
+          <div class="card-content">
+            <!-- ESG Export Action -->
+            <div style="margin-bottom: 20px;">
+              <button id="export-esg-btn" class="secondary-btn" style="width: 100%; justify-content: center; gap: 8px;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 16px; height: 16px;">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Export Corporate ESG Impact Statement</span>
+              </button>
+            </div>
+            <div class="analytics-metrics-grid">
+              
+              <!-- Metric 1: Total CO2 Saved -->
+              <div class="metric-card">
+                <div class="metric-icon-wrap green-glow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                  </svg>
+                </div>
+                <div class="metric-value-group">
+                  <span class="metric-value" id="dashboard-metric-co2">254.8</span><span class="metric-unit">kg</span>
+                  <span class="metric-name">Total CO₂ Saved</span>
+                </div>
+              </div>
+
+              <!-- Metric 2: Plastic Avoided -->
+              <div class="metric-card">
+                <div class="metric-icon-wrap indigo-glow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  </svg>
+                </div>
+                <div class="metric-value-group">
+                  <span class="metric-value" id="dashboard-metric-plastic">18,400</span><span class="metric-unit">g</span>
+                  <span class="metric-name">Single-Use Plastic Avoided</span>
+                </div>
+              </div>
+
+              <!-- Metric 3: Landfill Diversion Rate -->
+              <div class="metric-card">
+                <div class="metric-icon-wrap gold-glow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                </div>
+                <div class="metric-value-group">
+                  <span class="metric-value" id="dashboard-metric-diversion">94.2</span><span class="metric-unit">%</span>
+                  <span class="metric-name">Landfill Diversion Rate</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Custom Interactive Line Chart of Savings Progress -->
+            <div class="analytics-chart-container">
+              <div class="chart-header-row">
+                <h4>Carbon Offsets Over Time (Monthly Progress)</h4>
+                <span class="chart-legend"><span class="legend-dot green"></span> kg CO₂ Saved</span>
+              </div>
+              <div class="svg-chart-wrapper">
+                <!-- SVG Line Chart representing monthly carbon savings -->
+                <svg viewBox="0 0 340 120" class="line-chart-svg" width="100%" height="100%">
+                  <!-- Gridlines -->
+                  <line x1="30" y1="20" x2="330" y2="20" stroke="var(--border-translucent)" stroke-width="0.5"/>
+                  <line x1="30" y1="50" x2="330" y2="50" stroke="var(--border-translucent)" stroke-width="0.5"/>
+                  <line x1="30" y1="80" x2="330" y2="80" stroke="var(--border-translucent)" stroke-width="0.5"/>
+                  <line x1="30" y1="100" x2="330" y2="100" stroke="var(--text-muted)" stroke-width="1"/>
+                  <line x1="30" y1="20" x2="30" y2="100" stroke="var(--text-muted)" stroke-width="1"/>
+
+                  <!-- Graph Line Shadow Area -->
+                  <path d="M30 100 L30 85 L80 80 L130 65 L180 60 L230 40 L280 32 L330 18 L330 100 Z" fill="rgba(16, 185, 129, 0.05)"/>
+                  
+                  <!-- Graph Line -->
+                  <path d="M30 85 L80 80 L130 65 L180 60 L230 40 L280 32 L330 18" fill="none" stroke="var(--accent-primary)" stroke-width="2.5"/>
+
+                  <!-- Data Nodes -->
+                  <circle cx="30" cy="85" r="4" fill="var(--bg-card)" stroke="var(--accent-primary)" stroke-width="2" class="chart-dot"/>
+                  <circle cx="80" cy="80" r="4" fill="var(--bg-card)" stroke="var(--accent-primary)" stroke-width="2" class="chart-dot"/>
+                  <circle cx="130" cy="65" r="4" fill="var(--bg-card)" stroke="var(--accent-primary)" stroke-width="2" class="chart-dot"/>
+                  <circle cx="180" cy="60" r="4" fill="var(--bg-card)" stroke="var(--accent-primary)" stroke-width="2" class="chart-dot"/>
+                  <circle cx="230" cy="40" r="4" fill="var(--bg-card)" stroke="var(--accent-primary)" stroke-width="2" class="chart-dot"/>
+                  <circle cx="280" cy="32" r="4" fill="var(--bg-card)" stroke="var(--accent-primary)" stroke-width="2" class="chart-dot"/>
+                  <circle cx="330" cy="18" r="4" fill="var(--bg-card)" stroke="var(--accent-primary)" stroke-width="2" class="chart-dot"/>
+
+                  <!-- Chart Labels -->
+                  <text x="30" y="112" fill="var(--text-muted)" font-size="8" text-anchor="middle">Jan</text>
+                  <text x="80" y="112" fill="var(--text-muted)" font-size="8" text-anchor="middle">Feb</text>
+                  <text x="130" y="112" fill="var(--text-muted)" font-size="8" text-anchor="middle">Mar</text>
+                  <text x="180" y="112" fill="var(--text-muted)" font-size="8" text-anchor="middle">Apr</text>
+                  <text x="230" y="112" fill="var(--text-muted)" font-size="8" text-anchor="middle">May</text>
+                  <text x="280" y="112" fill="var(--text-muted)" font-size="8" text-anchor="middle">Jun</text>
+                  <text x="330" y="112" fill="var(--text-muted)" font-size="8" text-anchor="middle">Jul</text>
+                  
+                  <text x="25" y="88" fill="var(--text-muted)" font-size="8" text-anchor="end">40</text>
+                  <text x="25" y="53" fill="var(--text-muted)" font-size="8" text-anchor="end">120</text>
+                  <text x="25" y="23" fill="var(--text-muted)" font-size="8" text-anchor="end">200</text>
+                </svg>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer-bar">
+      <p>&copy; 2026 EcoPack AI. Developed for NxtWave Online Hackathon (Theme 2: Clean & Green Technology). All rights reserved.</p>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
