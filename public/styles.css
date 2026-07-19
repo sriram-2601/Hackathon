@@ -66,10 +66,11 @@ body {
 .bg-blur {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
+  filter: blur(140px);
   z-index: -1;
-  opacity: 0.45;
+  opacity: 0.55;
   pointer-events: none;
+  transition: var(--transition-smooth);
 }
 
 .blur-1 {
@@ -308,7 +309,8 @@ body {
 }
 
 .dashboard-card:hover {
-  border-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(16, 185, 129, 0.18);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4), 0 0 20px rgba(16, 185, 129, 0.05);
 }
 
 .card-header {
@@ -1843,4 +1845,36 @@ body {
 .guide-link {
   text-decoration: none;
   font-weight: 700;
+}
+
+/* Glossy Phone Sheen Overlay */
+.phone-sheen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  background: linear-gradient(105deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.03) 30%, rgba(255, 255, 255, 0) 31%);
+  pointer-events: none;
+  z-index: 8;
+}
+
+/* Pulsing upload button border */
+.upload-dropzone:hover .dropzone-illustration {
+  color: var(--accent-primary);
+  background-color: rgba(16, 185, 129, 0.15);
+  transform: translateY(-2px);
+  animation: pulse-border 1.5s infinite;
+}
+
+@keyframes pulse-border {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
 }
