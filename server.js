@@ -232,20 +232,22 @@ app.post('/api/audit', upload.single('image'), async (req, res) => {
     }
 
     // Determine if we should run Gemini API or fallback to mock
+    let auditData = null;
     if (genAI) {
-      console.log('Running visual audit with Gemini API...');
-      // Initialize Gemini multimodal model
-      const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
+      try {
+        console.log('Running visual audit with Gemini API...');
+        // Initialize Gemini multimodal model
+        const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
 
-      // Convert buffer to generative part
-      const imagePart = {
-        inlineData: {
-          data: req.file.buffer.toString("base64"),
-          mimeType: req.file.mimetype
-        }
-      };
+        // Convert buffer to generative part
+        const imagePart = {
+          inlineData: {
+            data: req.file.buffer.toString("base64"),
+            mimeType: req.file.mimetype
+          }
+        };
 
-      const systemPrompt = `
+        const systemPrompt = `
 You are an expert e-commerce packaging sustainability auditor.
 Analyze the uploaded image of e-commerce packaging. Identify the components present (e.g. bubble wrap, plastic mailers, cardboard boxes, tape, packing peanuts, paper stuffing).
 Evaluate the environmental impact and calculate an Eco-Score from 0 to 100 (where 100 is fully compostable/recycled and 0 is toxic/unrecyclable materials like Styrofoam).
@@ -288,31 +290,32 @@ You MUST respond ONLY with a valid JSON object matching the following structure:
 }
 `;
 
-      const result = await model.generateContent([
-        systemPrompt,
-        imagePart
-      ]);
+        const result = await model.generateContent([
+          systemPrompt,
+          imagePart
+        ]);
 
-      const response = await result.response;
-      let text = response.text().trim();
-      
-      // Clean up text if LLM wrapped it in markdown code block
-      if (text.startsWith("```json")) {
-        text = text.substring(7);
-      }
-      if (text.endsWith("```")) {
-        text = text.substring(0, text.length - 3);
-      }
-      text = text.trim();
+        const response = await result.response;
+        let text = response.text().trim();
+        
+        // Clean up text if LLM wrapped it in markdown code block
+        if (text.startsWith("```json")) {
+          text = text.substring(7);
+        }
+        if (text.endsWith("```")) {
+          text = text.substring(0, text.length - 3);
+        }
+        text = text.trim();
 
-      try {
-        const auditData = JSON.parse(text);
-        return res.json(auditData);
-      } catch (jsonErr) {
-        console.error("Failed to parse Gemini response as JSON:", text);
-        console.log("Falling back to MOCK response due to JSON parse failure.");
-        // Fallback to mock on parse error
+        auditData = JSON.parse(text);
+      } catch (geminiErr) {
+        console.error("Gemini API visual audit failed:", geminiErr);
+        console.log("Falling back to simulated (MOCK) response mode...");
       }
+    }
+
+    if (auditData) {
+      return res.json(auditData);
     }
 
     // 2. Mock mode fallback or fail fallback
