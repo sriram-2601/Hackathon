@@ -462,15 +462,31 @@ body {
 /* --- DASHBOARD GRID & CARDS --- */
 .dashboard-grid {
   display: grid;
-  grid-template-columns: 1.15fr 1.25fr 1fr;
+  grid-template-columns: 1fr 1.15fr;
   gap: 24px;
   align-items: start;
 }
 
-.grid-column-left, .grid-column-middle, .grid-column-right {
+.grid-column-left {
+  grid-column: 1;
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.grid-column-middle {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.grid-column-right {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 24px;
+  align-items: start;
 }
 
 /* Blueprint / Telemetry Card Panel */
@@ -1963,22 +1979,22 @@ body {
 }
 
 /* Responsive Grid Adaptation */
-@media (max-width: 1200px) {
+@media (max-width: 1100px) {
   .dashboard-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
   }
-  .grid-column-middle {
-    grid-column: span 2;
+  .grid-column-left, .grid-column-middle {
+    grid-column: span 1;
+  }
+  .grid-column-right {
+    grid-column: span 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
 }
 
 @media (max-width: 850px) {
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-  }
-  .grid-column-middle {
-    grid-column: span 1;
-  }
   .poe-hero-section {
     padding: 24px 10px 16px 10px;
   }
