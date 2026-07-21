@@ -235,7 +235,7 @@ app.post('/api/audit', upload.single('image'), async (req, res) => {
     if (genAI) {
       console.log('Running visual audit with Gemini API...');
       // Initialize Gemini multimodal model
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      const model = genAI.getGenerativeModel({ model: "gemini-3.5-flash" });
 
       // Convert buffer to generative part
       const imagePart = {
