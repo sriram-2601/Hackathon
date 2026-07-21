@@ -467,26 +467,10 @@ body {
   align-items: start;
 }
 
-.grid-column-left {
-  grid-column: 1;
+.grid-column-left, .grid-column-right {
   display: flex;
   flex-direction: column;
   gap: 24px;
-}
-
-.grid-column-middle {
-  grid-column: 2;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.grid-column-right {
-  grid-column: span 2;
-  display: grid;
-  grid-template-columns: 1fr 1.15fr;
-  gap: 24px;
-  align-items: start;
 }
 
 /* Blueprint / Telemetry Card Panel */
@@ -1982,15 +1966,6 @@ body {
 @media (max-width: 1100px) {
   .dashboard-grid {
     grid-template-columns: 1fr;
-  }
-  .grid-column-left, .grid-column-middle {
-    grid-column: span 1;
-  }
-  .grid-column-right {
-    grid-column: span 1;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
   }
 }
 
