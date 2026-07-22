@@ -447,6 +447,9 @@ app.post('/api/optimize-box', (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`EcoPack AI Server is running on http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`EcoPack AI Server is running on http://localhost:${PORT}`);
+  });
+}
+module.exports = app;
