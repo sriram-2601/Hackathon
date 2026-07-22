@@ -473,6 +473,11 @@ body {
   gap: 24px;
 }
 
+#history-section {
+  grid-column: span 2;
+  margin-top: 12px;
+}
+
 /* Blueprint / Telemetry Card Panel */
 .dashboard-card {
   background: var(--bg-card);
